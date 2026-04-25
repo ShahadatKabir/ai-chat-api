@@ -1,0 +1,129 @@
+G:\Course\Data science\dot net new\bin\Debug\net10.0\NuGet.Config
+G:\Course\Data science\dot net new\bin\Debug\net10.0\AiChatApi.staticwebassets.endpoints.json
+G:\Course\Data science\dot net new\bin\Debug\net10.0\AiChatApi.exe
+G:\Course\Data science\dot net new\bin\Debug\net10.0\AiChatApi.deps.json
+G:\Course\Data science\dot net new\bin\Debug\net10.0\AiChatApi.runtimeconfig.json
+G:\Course\Data science\dot net new\bin\Debug\net10.0\AiChatApi.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\AiChatApi.pdb
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Microsoft.OpenApi.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Newtonsoft.Json.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+G:\Course\Data science\dot net new\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.csproj.AssemblyReference.cache
+G:\Course\Data science\dot net new\obj\Debug\net10.0\rpswa.dswa.cache.json
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.GeneratedMSBuildEditorConfig.editorconfig
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.AssemblyInfoInputs.cache
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.AssemblyInfo.cs
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.csproj.CoreCompileInputs.cache
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.MvcApplicationPartsAssemblyInfo.cs
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.MvcApplicationPartsAssemblyInfo.cache
+G:\Course\Data science\dot net new\obj\Debug\net10.0\rjimswa.dswa.cache.json
+G:\Course\Data science\dot net new\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+G:\Course\Data science\dot net new\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+G:\Course\Data science\dot net new\obj\Debug\net10.0\scopedcss\bundle\AiChatApi.styles.css
+G:\Course\Data science\dot net new\obj\Debug\net10.0\staticwebassets.build.json
+G:\Course\Data science\dot net new\obj\Debug\net10.0\staticwebassets.build.json.cache
+G:\Course\Data science\dot net new\obj\Debug\net10.0\staticwebassets.development.json
+G:\Course\Data science\dot net new\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+G:\Course\Data science\dot net new\obj\Debug\net10.0\swae.build.ex.cache
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.csproj.Up2Date
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.dll
+G:\Course\Data science\dot net new\obj\Debug\net10.0\refint\AiChatApi.dll
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.pdb
+G:\Course\Data science\dot net new\obj\Debug\net10.0\AiChatApi.genruntimeconfig.cache
+G:\Course\Data science\dot net new\obj\Debug\net10.0\ref\AiChatApi.dll
+D:\LPL\dot net new\bin\Debug\net10.0\NuGet.Config
+D:\LPL\dot net new\bin\Debug\net10.0\AiChatApi.staticwebassets.endpoints.json
+D:\LPL\dot net new\bin\Debug\net10.0\AiChatApi.exe
+D:\LPL\dot net new\bin\Debug\net10.0\AiChatApi.deps.json
+D:\LPL\dot net new\bin\Debug\net10.0\AiChatApi.runtimeconfig.json
+D:\LPL\dot net new\bin\Debug\net10.0\AiChatApi.dll
+D:\LPL\dot net new\bin\Debug\net10.0\AiChatApi.pdb
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Microsoft.OpenApi.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Newtonsoft.Json.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\LPL\dot net new\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\LPL\dot net new\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.csproj.AssemblyReference.cache
+D:\LPL\dot net new\obj\Debug\net10.0\rpswa.dswa.cache.json
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.GeneratedMSBuildEditorConfig.editorconfig
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.AssemblyInfoInputs.cache
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.AssemblyInfo.cs
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.csproj.CoreCompileInputs.cache
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.MvcApplicationPartsAssemblyInfo.cs
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.MvcApplicationPartsAssemblyInfo.cache
+D:\LPL\dot net new\obj\Debug\net10.0\rjimswa.dswa.cache.json
+D:\LPL\dot net new\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+D:\LPL\dot net new\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+D:\LPL\dot net new\obj\Debug\net10.0\scopedcss\bundle\AiChatApi.styles.css
+D:\LPL\dot net new\obj\Debug\net10.0\staticwebassets.build.json
+D:\LPL\dot net new\obj\Debug\net10.0\staticwebassets.build.json.cache
+D:\LPL\dot net new\obj\Debug\net10.0\staticwebassets.development.json
+D:\LPL\dot net new\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+D:\LPL\dot net new\obj\Debug\net10.0\swae.build.ex.cache
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.csproj.Up2Date
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.dll
+D:\LPL\dot net new\obj\Debug\net10.0\refint\AiChatApi.dll
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.pdb
+D:\LPL\dot net new\obj\Debug\net10.0\AiChatApi.genruntimeconfig.cache
+D:\LPL\dot net new\obj\Debug\net10.0\ref\AiChatApi.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\NuGet.Config
+D:\LPL\AiChatApi\bin\Debug\net10.0\AiChatApi.staticwebassets.endpoints.json
+D:\LPL\AiChatApi\bin\Debug\net10.0\AiChatApi.exe
+D:\LPL\AiChatApi\bin\Debug\net10.0\AiChatApi.deps.json
+D:\LPL\AiChatApi\bin\Debug\net10.0\AiChatApi.runtimeconfig.json
+D:\LPL\AiChatApi\bin\Debug\net10.0\AiChatApi.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\AiChatApi.pdb
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Microsoft.OpenApi.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Newtonsoft.Json.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.csproj.AssemblyReference.cache
+D:\LPL\AiChatApi\obj\Debug\net10.0\rpswa.dswa.cache.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.GeneratedMSBuildEditorConfig.editorconfig
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.AssemblyInfoInputs.cache
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.AssemblyInfo.cs
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.csproj.CoreCompileInputs.cache
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.MvcApplicationPartsAssemblyInfo.cs
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.MvcApplicationPartsAssemblyInfo.cache
+D:\LPL\AiChatApi\obj\Debug\net10.0\rjimswa.dswa.cache.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\scopedcss\bundle\AiChatApi.styles.css
+D:\LPL\AiChatApi\obj\Debug\net10.0\staticwebassets.build.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\staticwebassets.build.json.cache
+D:\LPL\AiChatApi\obj\Debug\net10.0\staticwebassets.development.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\swae.build.ex.cache
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.csproj.Up2Date
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.dll
+D:\LPL\AiChatApi\obj\Debug\net10.0\refint\AiChatApi.dll
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.pdb
+D:\LPL\AiChatApi\obj\Debug\net10.0\AiChatApi.genruntimeconfig.cache
+D:\LPL\AiChatApi\obj\Debug\net10.0\ref\AiChatApi.dll
