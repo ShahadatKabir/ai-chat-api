@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,10 +11,18 @@ using System.Text;
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
+    private readonly IConfiguration _configuration;
+
+    public AuthController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    [AllowAnonymous]
     [HttpPost("login")]
     public IActionResult Login()
     {
-        var key = "THIS_IS_SECRET_KEY_123";
+        var key = _configuration["Jwt:Key"] ?? "THIS_IS_SECRET_KEY_123";
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes(key);
