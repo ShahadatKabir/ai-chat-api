@@ -65,7 +65,7 @@ public class ChatHistoryService : IChatHistoryService
 
     public IReadOnlyCollection<ChatSession> GetAllSessions()
     {
-        return _sessions.Values;
+        return _sessions.Values.ToList();
     }
 
     public ChatSession GetSession(string sessionId)
