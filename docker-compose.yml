@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  aichatapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      - Jwt__Key=${JWT_KEY:-THIS_IS_SECRET_KEY_123}
+      - Gemini__ApiKey=${GEMINI_API_KEY:-}
+      - Gemini__Model=${GEMINI_MODEL:-gemini-pro}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/test/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

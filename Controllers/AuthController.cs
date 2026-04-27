@@ -6,24 +6,89 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly IUserService _userService;
 
-    public AuthController(IConfiguration configuration)
+    public AuthController(IConfiguration configuration, IUserService userService)
     {
         _configuration = configuration;
+        _userService = userService;
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {
+        if (request == null || string.IsNullOrWhiteSpace(request.Username) ||
+            string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest(new { error = "Username, email, and password are required." });
+        }
+
+        try
+        {
+            var user = await _userService.RegisterAsync(request.Username, request.Email, request.Password);
+            return CreatedAtAction(nameof(GetProfile), new { id = user.Id }, new { user.Id, user.Username, user.Email, user.CreatedAt });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { error = ex.Message });
+        }
     }
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public IActionResult Login()
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        if (request == null || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest(new { error = "Username and password are required." });
+        }
+
+        try
+        {
+            var user = await _userService.LoginAsync(request.Username, request.Password);
+            var token = GenerateJwtToken(user);
+            return Ok(new { token, user = new { user.Id, user.Username, user.Email } });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { error = ex.Message });
+        }
+    }
+
+    [Authorize]
+    [HttpGet("profile")]
+    public async Task<IActionResult> GetProfile()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _userService.GetUserByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound(new { error = "User not found." });
+        }
+
+        return Ok(new { user.Id, user.Username, user.Email, user.CreatedAt, user.LastLoginAt });
+    }
+
+    private string GenerateJwtToken(User user)
     {
         var key = _configuration["Jwt:Key"] ?? "THIS_IS_SECRET_KEY_123";
-
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes(key);
 
@@ -31,7 +96,9 @@ public class AuthController : ControllerBase
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, "user")
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email)
             }),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(
@@ -40,7 +107,19 @@ public class AuthController : ControllerBase
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-
-        return Ok(new { token = tokenHandler.WriteToken(token) });
+        return tokenHandler.WriteToken(token);
     }
+}
+
+public class RegisterRequest
+{
+    public string Username { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
+
+public class LoginRequest
+{
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

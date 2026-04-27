@@ -38,6 +38,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddSingleton<IChatHistoryService, ChatHistoryService>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IFavoritesService, FavoritesService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -72,6 +74,9 @@ builder.Services.AddHttpClient();
 var app = builder.Build();
 
 app.UseCors("AllowAll");
+
+// Add rate limiting middleware
+app.UseMiddleware<RateLimitingMiddleware>();
 
 // Disable HTTPS for simplicity
 // app.UseHttpsRedirection();

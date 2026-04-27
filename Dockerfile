@@ -1,17 +1,32 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY AiChatApi.csproj ./
-RUN dotnet restore
+# Copy csproj and restore as distinct layers
+COPY ["AiChatApi.csproj", "./"]
+RUN dotnet restore "AiChatApi.csproj"
 
-COPY . ./
-RUN dotnet publish -c Release -o /app/publish
+# Copy everything else and build
+COPY . .
+RUN dotnet build "AiChatApi.csproj" -c Release -o /app/build
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
+FROM build AS publish
+RUN dotnet publish "AiChatApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
+# Create non-root user
+RUN adduser --disabled-password --gecos '' appuser && chown -R appuser:appuser /app
+USER appuser
 
-COPY --from=build /app/publish ./
+# Set environment variables
+ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+# Expose port
+EXPOSE 5000
+
+# Copy published app
+COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "AiChatApi.dll"]
