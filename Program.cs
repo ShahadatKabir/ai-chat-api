@@ -40,6 +40,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddSingleton<IChatHistoryService, ChatHistoryService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IFavoritesService, FavoritesService>();
+builder.Services.AddSingleton<IChatFeedbackService, ChatFeedbackService>();
+builder.Services.AddSingleton<IPromptTemplateService, PromptTemplateService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

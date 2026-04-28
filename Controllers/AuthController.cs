@@ -83,7 +83,40 @@ public class AuthController : ControllerBase
             return NotFound(new { error = "User not found." });
         }
 
-        return Ok(new { user.Id, user.Username, user.Email, user.CreatedAt, user.LastLoginAt });
+        return Ok(new { user.Id, user.Username, user.Email, user.FirstName, user.LastName, user.Bio, user.CreatedAt, user.LastLoginAt });
+    }
+
+    [Authorize]
+    [HttpPut("profile")]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _userService.GetUserByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound(new { error = "User not found." });
+        }
+
+        // Update fields if provided
+        if (!string.IsNullOrWhiteSpace(request.FirstName))
+            user.FirstName = request.FirstName;
+        if (!string.IsNullOrWhiteSpace(request.LastName))
+            user.LastName = request.LastName;
+        if (!string.IsNullOrWhiteSpace(request.Bio))
+            user.Bio = request.Bio;
+
+        var success = await _userService.UpdateUserAsync(user);
+        if (!success)
+        {
+            return StatusCode(500, new { error = "Failed to update profile." });
+        }
+
+        return Ok(new { user.Id, user.Username, user.Email, user.FirstName, user.LastName, user.Bio, user.CreatedAt, user.LastLoginAt });
     }
 
     private string GenerateJwtToken(User user)
@@ -122,4 +155,11 @@ public class LoginRequest
 {
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+}
+
+public class UpdateProfileRequest
+{
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Bio { get; set; } = string.Empty;
 }

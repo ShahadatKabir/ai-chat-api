@@ -7,11 +7,14 @@
 
 ## ✅ Features
 - **User Management**: Register and login with username/password, JWT authentication
+- **User Profiles**: Update user profile information (first name, last name, bio)
 - **Chat with Gemini**: Protected chat endpoint using Google's Gemini AI models
 - **Session Management**: Create, switch, and manage conversation sessions
 - **Chat History**: In-memory storage with search and export capabilities
 - **Analytics**: Detailed analytics and conversation summaries
 - **Favorites**: Mark and manage favorite messages
+- **Feedback System**: Rate and comment on chat interactions
+- **Prompt Templates**: Create, share, and manage reusable chat prompts
 - **Rate Limiting**: Built-in rate limiting to prevent abuse
 - **Export**: Export chat history as JSON or CSV
 - **Swagger UI**: Interactive API documentation with Bearer auth support
