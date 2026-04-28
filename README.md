@@ -123,7 +123,36 @@ docker-run.bat stop
 
 ---
 
-## 💻 Local Development
+## � CI/CD with GitHub Actions
+
+This project includes automated Docker builds using GitHub Actions. Every push to the `main` branch automatically builds and pushes a new Docker image to Docker Hub.
+
+### Setup GitHub Secrets
+
+To enable automated builds, add these secrets to your GitHub repository:
+
+1. Go to your repository on GitHub
+2. Navigate to **Settings** → **Secrets and variables** → **Actions**
+3. Add the following secrets:
+   - `DOCKERHUB_USERNAME`: Your Docker Hub username
+   - `DOCKERHUB_TOKEN`: Your Docker Hub access token (create one at https://hub.docker.com/settings/security)
+
+### Automated Image Tags
+
+The workflow creates images with these tags:
+- `latest`: Latest build from main branch
+- `main`: Current main branch commit
+- `main-<short-sha>`: Specific commit hash
+
+### Pull the Latest Image
+
+```bash
+docker pull shahadatkabir/aichatapi:latest
+```
+
+---
+
+## �💻 Local Development
 
 Open terminal inside project folder:
 
