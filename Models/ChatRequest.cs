@@ -4,4 +4,5 @@ public class ChatRequest
     public string Model { get; set; } = string.Empty;
     public float Temperature { get; set; } = 0.7f;
     public int MaxOutputTokens { get; set; } = 256;
+    public string SessionId { get; set; } = string.Empty;
 }

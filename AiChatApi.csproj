@@ -10,4 +10,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="bin\**;obj\**;.appdata\**" />
+    <Content Remove="bin\**;obj\**;.appdata\**" />
+    <EmbeddedResource Remove="bin\**;obj\**;.appdata\**" />
+    <None Remove="bin\**;obj\**;.appdata\**" />
+  </ItemGroup>
+
 </Project>

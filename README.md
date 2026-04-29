@@ -10,7 +10,9 @@
 - **User Profiles**: Update user profile information (first name, last name, bio)
 - **Chat with Gemini**: Protected chat endpoint using Google's Gemini AI models
 - **Session Management**: Create, switch, and manage conversation sessions
+- **Session Targeting**: Send chat requests directly to a selected session
 - **Chat History**: In-memory storage with search and export capabilities
+- **History Paging & Cleanup**: Page through history and delete individual messages
 - **Analytics**: Detailed analytics and conversation summaries
 - **Favorites**: Mark and manage favorite messages
 - **Feedback System**: Rate and comment on chat interactions
@@ -172,18 +174,22 @@ Navigate to `http://localhost:5000/swagger` for API documentation.
 - `GET /api/auth/profile` - Get current user profile
 
 ### Chat
-- `POST /api/chat` - Send message to Gemini AI (requires auth)
+- `POST /api/chat` - Send message to Gemini AI (requires auth; optional `sessionId`)
 
 ### Sessions
 - `POST /api/sessions` - Create new session
 - `GET /api/sessions` - List all sessions
 - `GET /api/sessions/{id}` - Get session details
+- `PATCH /api/sessions/{id}` - Rename a session
 - `POST /api/sessions/{id}/switch` - Switch to session
 - `GET /api/sessions/{id}/history` - Get session chat history
+- `GET /api/sessions/{id}/history/paged?page=1&pageSize=25` - Get paginated session history
 - `DELETE /api/sessions/{id}` - Delete session
 
 ### History
 - `GET /api/chat/history` - Get all chat history
+- `GET /api/chat/history/paged?page=1&pageSize=25&sessionId=...` - Get paginated chat history
+- `DELETE /api/chat/history/{messageId}` - Delete a single history message
 - `DELETE /api/chat/history` - Clear all history
 - `GET /api/chat/history/export/json` - Export history as JSON
 - `GET /api/chat/history/export/csv` - Export history as CSV

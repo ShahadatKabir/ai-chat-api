@@ -48,6 +48,67 @@ public class ChatHistoryService : IChatHistoryService
         return _history.ToArray();
     }
 
+    public PagedChatHistoryResult GetHistoryPage(int page, int pageSize, string sessionId = null)
+    {
+        page = Math.Max(page, 1);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
+        var query = _history.AsEnumerable();
+        if (!string.IsNullOrWhiteSpace(sessionId))
+        {
+            query = query.Where(h => h.SessionId == sessionId);
+        }
+
+        var items = query
+            .OrderByDescending(h => h.Timestamp)
+            .ToList();
+
+        var totalItems = items.Count;
+        var totalPages = totalItems == 0 ? 0 : (int)Math.Ceiling(totalItems / (double)pageSize);
+
+        return new PagedChatHistoryResult
+        {
+            Page = page,
+            PageSize = pageSize,
+            TotalItems = totalItems,
+            TotalPages = totalPages,
+            Items = items
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList()
+        };
+    }
+
+    public bool DeleteMessage(string messageId)
+    {
+        if (string.IsNullOrWhiteSpace(messageId))
+        {
+            return false;
+        }
+
+        var existingItems = _history.ToList();
+        var itemToRemove = existingItems.FirstOrDefault(h => h.Id == messageId);
+        if (itemToRemove == null)
+        {
+            return false;
+        }
+
+        var remainingItems = existingItems.Where(h => h.Id != messageId).ToList();
+        while (_history.TryDequeue(out _)) { }
+        foreach (var item in remainingItems)
+        {
+            _history.Enqueue(item);
+        }
+
+        if (_sessions.TryGetValue(itemToRemove.SessionId, out var session) && session.MessageCount > 0)
+        {
+            session.MessageCount--;
+            session.LastActiveAt = DateTime.UtcNow;
+        }
+
+        return true;
+    }
+
     public void Clear()
     {
         while (_history.TryDequeue(out _))
@@ -72,6 +133,18 @@ public class ChatHistoryService : IChatHistoryService
     {
         _sessions.TryGetValue(sessionId, out var session);
         return session;
+    }
+
+    public bool UpdateSessionTitle(string sessionId, string title)
+    {
+        if (string.IsNullOrWhiteSpace(title) || !_sessions.TryGetValue(sessionId, out var session))
+        {
+            return false;
+        }
+
+        session.Title = title.Trim();
+        session.LastActiveAt = DateTime.UtcNow;
+        return true;
     }
 
     public void SetCurrentSession(string sessionId)

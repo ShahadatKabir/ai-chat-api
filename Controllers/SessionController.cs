@@ -55,6 +55,25 @@ public class SessionController : ControllerBase
     }
 
     /// <summary>
+    /// Rename a conversation session
+    /// </summary>
+    [HttpPatch("{id}")]
+    public IActionResult UpdateSession(string id, [FromBody] UpdateSessionRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request?.Title))
+        {
+            return BadRequest(new { error = "Title is required." });
+        }
+
+        if (!_historyService.UpdateSessionTitle(id, request.Title))
+        {
+            return NotFound(new { error = "Session not found." });
+        }
+
+        return Ok(_historyService.GetSession(id));
+    }
+
+    /// <summary>
     /// Switch to a specific session
     /// </summary>
     [HttpPost("{id}/switch")]
@@ -76,8 +95,27 @@ public class SessionController : ControllerBase
     [HttpGet("{id}/history")]
     public IActionResult GetSessionHistory(string id)
     {
+        if (_historyService.GetSession(id) == null)
+        {
+            return NotFound(new { error = "Session not found." });
+        }
+
         var history = _historyService.GetSessionHistory(id);
         return Ok(history);
+    }
+
+    /// <summary>
+    /// Get paginated chat history for a specific session
+    /// </summary>
+    [HttpGet("{id}/history/paged")]
+    public IActionResult GetSessionHistoryPage(string id, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+    {
+        if (_historyService.GetSession(id) == null)
+        {
+            return NotFound(new { error = "Session not found." });
+        }
+
+        return Ok(_historyService.GetHistoryPage(page, pageSize, id));
     }
 
     /// <summary>
@@ -97,6 +135,11 @@ public class SessionController : ControllerBase
 }
 
 public class CreateSessionRequest
+{
+    public string Title { get; set; } = string.Empty;
+}
+
+public class UpdateSessionRequest
 {
     public string Title { get; set; } = string.Empty;
 }

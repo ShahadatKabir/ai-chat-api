@@ -22,6 +22,26 @@ public class HistoryController : ControllerBase
         return Ok(_historyService.GetHistory());
     }
 
+    [HttpGet("paged")]
+    public IActionResult GetHistoryPage(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 25,
+        [FromQuery] string sessionId = null)
+    {
+        return Ok(_historyService.GetHistoryPage(page, pageSize, sessionId));
+    }
+
+    [HttpDelete("{messageId}")]
+    public IActionResult DeleteMessage(string messageId)
+    {
+        if (!_historyService.DeleteMessage(messageId))
+        {
+            return NotFound(new { error = "Message not found." });
+        }
+
+        return NoContent();
+    }
+
     [HttpDelete]
     public IActionResult ClearHistory()
     {

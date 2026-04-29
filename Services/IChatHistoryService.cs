@@ -7,12 +7,15 @@ public interface IChatHistoryService
     // Existing
     Task AddAsync(ChatHistoryItem item);
     IReadOnlyList<ChatHistoryItem> GetHistory();
+    PagedChatHistoryResult GetHistoryPage(int page, int pageSize, string sessionId = null);
+    bool DeleteMessage(string messageId);
     void Clear();
 
     // Session Management
     ChatSession CreateSession(string title);
     IReadOnlyCollection<ChatSession> GetAllSessions();
     ChatSession GetSession(string sessionId);
+    bool UpdateSessionTitle(string sessionId, string title);
     void SetCurrentSession(string sessionId);
     string GetCurrentSessionId();
     IReadOnlyList<ChatHistoryItem> GetSessionHistory(string sessionId);

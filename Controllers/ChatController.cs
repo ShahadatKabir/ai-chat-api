@@ -39,6 +39,15 @@ public class ChatController : ControllerBase
             IAiService aiService = _aiService;
             var requestedModel = request.Model?.ToLower() ?? string.Empty;
 
+            var sessionId = string.IsNullOrWhiteSpace(request.SessionId)
+                ? _historyService.GetCurrentSessionId()
+                : request.SessionId;
+
+            if (_historyService.GetSession(sessionId) == null)
+            {
+                return BadRequest(new { error = "Session not found." });
+            }
+
             if (requestedModel.Contains("gemma"))
             {
                 aiService = new GemmaService(_httpClientFactory, _configuration);
@@ -68,15 +77,20 @@ public class ChatController : ControllerBase
             };
 
             // Store in history
-            await _historyService.AddAsync(new ChatHistoryItem
+            var historyItem = new ChatHistoryItem
             {
                 UserMessage = request.Prompt,
                 BotResponse = responseText,
                 Model = model,
                 Temperature = request.Temperature,
                 MaxOutputTokens = request.MaxOutputTokens,
-                SessionId = _historyService.GetCurrentSessionId()
-            });
+                SessionId = sessionId
+            };
+
+            await _historyService.AddAsync(historyItem);
+
+            chatResponse.MessageId = historyItem.Id;
+            chatResponse.SessionId = historyItem.SessionId;
 
             return Ok(chatResponse);
         }
