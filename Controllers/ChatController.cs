@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 [ApiController]
@@ -13,88 +12,89 @@ using System.Threading.Tasks;
 [Authorize]
 public class ChatController : ControllerBase
 {
-    private readonly HttpClient _client;
+    private readonly IAiService _aiService;
     private readonly IConfiguration _configuration;
     private readonly IChatHistoryService _historyService;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public ChatController(IHttpClientFactory factory, IConfiguration configuration, IChatHistoryService historyService)
+    public ChatController(IAiService aiService, IConfiguration configuration, IChatHistoryService historyService, IHttpClientFactory httpClientFactory)
     {
-        _client = factory.CreateClient();
+        _aiService = aiService;
         _configuration = configuration;
         _historyService = historyService;
+        _httpClientFactory = httpClientFactory;
     }
 
     [HttpPost]
     public async Task<IActionResult> Chat([FromBody] ChatRequest request)
     {
-        if (request == null || string.IsNullOrWhiteSpace(request.Prompt))
-        {
-            return BadRequest(new { error = "Request body must include a non-empty prompt." });
-        }
-
-        var apiKey = _configuration["Gemini:ApiKey"] ?? Environment.GetEnvironmentVariable("GEMINI_API_KEY");
-        if (string.IsNullOrWhiteSpace(apiKey))
-        {
-            return Problem(detail: "Gemini API key is not configured. Set appsettings.json or the GEMINI_API_KEY environment variable.", statusCode: 500);
-        }
-
-        var model = string.IsNullOrWhiteSpace(request.Model)
-            ? _configuration["Gemini:Model"] ?? "gemini-pro"
-            : request.Model;
-
-        var url = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={apiKey}";
-
-        var body = new
-        {
-            contents = new[]
-            {
-                new
-                {
-                    parts = new[] { new { text = request.Prompt } }
-                }
-            },
-            temperature = request.Temperature,
-            maxOutputTokens = request.MaxOutputTokens
-        };
-
-        var req = new HttpRequestMessage(HttpMethod.Post, url)
-        {
-            Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json")
-        };
-
-        var res = await _client.SendAsync(req);
-        var result = await res.Content.ReadAsStringAsync();
-
-        string responseText = result;
         try
         {
-            var json = JObject.Parse(result);
-            responseText = json["candidates"]?[0]?["content"]?[0]?["text"]?.ToString() ?? result;
+            if (request == null || string.IsNullOrWhiteSpace(request.Prompt))
+            {
+                return BadRequest(new { error = "Request body must include a non-empty prompt." });
+            }
+
+            // Determine which AI provider to use based on model parameter
+            IAiService aiService = _aiService;
+            var requestedModel = request.Model?.ToLower() ?? string.Empty;
+
+            if (requestedModel.Contains("gemma"))
+            {
+                aiService = new GemmaService(_httpClientFactory, _configuration);
+            }
+            else
+            {
+                aiService = new GeminiService(_httpClientFactory, _configuration);
+            }
+
+            // Generate response
+            var responseText = await aiService.GenerateContentAsync(
+                request.Prompt,
+                request.Temperature,
+                request.MaxOutputTokens
+            );
+
+            var model = string.IsNullOrWhiteSpace(request.Model)
+                ? _configuration["Gemini:Model"] ?? "gemini-pro"
+                : request.Model;
+
+            var chatResponse = new ChatResponse
+            {
+                ResponseText = responseText,
+                Model = model,
+                Temperature = request.Temperature,
+                MaxOutputTokens = request.MaxOutputTokens
+            };
+
+            // Store in history
+            await _historyService.AddAsync(new ChatHistoryItem
+            {
+                UserMessage = request.Prompt,
+                BotResponse = responseText,
+                Model = model,
+                Temperature = request.Temperature,
+                MaxOutputTokens = request.MaxOutputTokens,
+                SessionId = _historyService.GetCurrentSessionId()
+            });
+
+            return Ok(chatResponse);
         }
-        catch
+        catch (ArgumentException ex)
         {
-            // Keep raw text if response is not JSON or shape is unexpected.
+            return BadRequest(new { error = ex.Message });
         }
-
-        var chatResponse = new ChatResponse
+        catch (InvalidOperationException ex)
         {
-            ResponseText = responseText,
-            Model = model,
-            Temperature = request.Temperature,
-            MaxOutputTokens = request.MaxOutputTokens,
-            RawResponse = JsonConvert.DeserializeObject(result)
-        };
-
-        await _historyService.AddAsync(new ChatHistoryItem
+            return Problem(detail: ex.Message, statusCode: 500);
+        }
+        catch (HttpRequestException ex)
         {
-            UserMessage = request.Prompt,
-            BotResponse = responseText,
-            Model = model,
-            Temperature = request.Temperature,
-            MaxOutputTokens = request.MaxOutputTokens,
-            SessionId = _historyService.GetCurrentSessionId()
-        });
-
-        return Ok(chatResponse);
+            return Problem(detail: $"AI API error: {ex.Message}", statusCode: 503);
+        }
+        catch (Exception ex)
+        {
+            return Problem(detail: $"An unexpected error occurred: {ex.Message}", statusCode: 500);
+        }
     }
 }

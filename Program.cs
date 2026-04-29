@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,17 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(tokenKey)
     };
 });
+
+// AI Services
+var aiProvider = configuration["AiProvider"] ?? "Gemini";
+if (aiProvider.Equals("Gemma", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddSingleton<IAiService, GemmaService>();
+}
+else
+{
+    builder.Services.AddSingleton<IAiService, GeminiService>();
+}
 
 builder.Services.AddSingleton<IChatHistoryService, ChatHistoryService>();
 builder.Services.AddSingleton<IUserService, UserService>();
