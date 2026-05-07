@@ -150,3 +150,7 @@ D:\LPL\AiChatApi\bin\BuildTemp\Swashbuckle.AspNetCore.Swagger.dll
 D:\LPL\AiChatApi\bin\BuildTemp\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\LPL\AiChatApi\bin\BuildTemp\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\LPL\AiChatApi\bin\BuildTemp\System.IdentityModel.Tokens.Jwt.dll
+D:\LPL\AiChatApi\bin\Debug\net10.0\AiChatApi.staticwebassets.runtime.json
+D:\LPL\AiChatApi\obj\Debug\net10.0\compressed\7tayps7fl5-{0}-9bl76w8lmt-9bl76w8lmt.gz
+D:\LPL\AiChatApi\obj\Debug\net10.0\compressed\88rdahkmfi-{0}-7xn83e24eg-7xn83e24eg.gz
+D:\LPL\AiChatApi\obj\Debug\net10.0\compressed\frmpqfrygj-{0}-mmaobamgs7-mmaobamgs7.gz

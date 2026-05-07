@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -49,8 +51,9 @@ else
     builder.Services.AddSingleton<IAiService, GeminiService>();
 }
 
-builder.Services.AddSingleton<IChatHistoryService, ChatHistoryService>();
-builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IDataPersistenceService, DataPersistenceService>();
+builder.Services.AddSingleton<IUserService, PersistenceUserService>();
+builder.Services.AddSingleton<IChatHistoryService, PersistenceChatHistoryService>();
 builder.Services.AddSingleton<IFavoritesService, FavoritesService>();
 builder.Services.AddSingleton<IChatFeedbackService, ChatFeedbackService>();
 builder.Services.AddSingleton<IPromptTemplateService, PromptTemplateService>();
@@ -84,10 +87,14 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 builder.Services.AddHttpClient();
+builder.Services.AddHostedService<CleanupBackgroundService>();
 
 var app = builder.Build();
 
 app.UseCors("AllowAll");
+
+// Add logging middleware
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 // Add rate limiting middleware
 app.UseMiddleware<RateLimitingMiddleware>();
@@ -97,6 +104,9 @@ app.UseMiddleware<RateLimitingMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

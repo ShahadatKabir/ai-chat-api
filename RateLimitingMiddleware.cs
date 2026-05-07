@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
@@ -7,11 +8,14 @@ public class RateLimitingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ConcurrentDictionary<string, ClientRequestInfo> _clients = new();
-    private readonly int _maxRequestsPerMinute = 60; // Configurable
+    private readonly int _maxRequestsPerMinute;
+    private readonly IConfiguration _configuration;
 
-    public RateLimitingMiddleware(RequestDelegate next)
+    public RateLimitingMiddleware(RequestDelegate next, IConfiguration configuration)
     {
         _next = next;
+        _configuration = configuration;
+        _maxRequestsPerMinute = configuration.GetValue<int>("RateLimiting:MaxRequestsPerMinute", 60);
     }
 
     public async Task InvokeAsync(HttpContext context)
