@@ -1,19 +1,19 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 public class RateLimitingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ConcurrentDictionary<string, ClientRequestInfo> _clients = new();
+    private readonly IUserRateLimitService _rateLimitService;
     private readonly int _maxRequestsPerMinute;
     private readonly IConfiguration _configuration;
 
-    public RateLimitingMiddleware(RequestDelegate next, IConfiguration configuration)
+    public RateLimitingMiddleware(RequestDelegate next, IUserRateLimitService rateLimitService, IConfiguration configuration)
     {
         _next = next;
+        _rateLimitService = rateLimitService;
         _configuration = configuration;
         _maxRequestsPerMinute = configuration.GetValue<int>("RateLimiting:MaxRequestsPerMinute", 60);
     }
@@ -21,50 +21,27 @@ public class RateLimitingMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         var clientId = GetClientId(context);
-        var clientInfo = _clients.GetOrAdd(clientId, new ClientRequestInfo());
+        var limitInfo = _rateLimitService.GetRateLimitInfo(clientId, _maxRequestsPerMinute);
 
-        if (clientInfo.IsRateLimited())
+        if (limitInfo.IsLimited)
         {
+            context.Response.Headers["X-RateLimit-Limit"] = _maxRequestsPerMinute.ToString();
+            context.Response.Headers["X-RateLimit-Remaining"] = "0";
             context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
             await context.Response.WriteAsJsonAsync(new { error = "Rate limit exceeded. Try again later." });
             return;
         }
 
-        clientInfo.RecordRequest();
+        _rateLimitService.RecordRequest(clientId);
+        context.Response.Headers["X-RateLimit-Limit"] = _maxRequestsPerMinute.ToString();
+        context.Response.Headers["X-RateLimit-Remaining"] = limitInfo.RemainingRequests.ToString();
+        context.Response.Headers["X-RateLimit-Reset"] = "60";
+
         await _next(context);
     }
 
     private string GetClientId(HttpContext context)
     {
-        // Use IP address for rate limiting (in production, consider user ID for authenticated requests)
         return context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
-    }
-}
-
-public class ClientRequestInfo
-{
-    private readonly ConcurrentQueue<DateTime> _requests = new();
-    private readonly int _maxRequestsPerMinute = 60;
-
-    public void RecordRequest()
-    {
-        _requests.Enqueue(DateTime.UtcNow);
-
-        // Remove old requests
-        while (_requests.TryPeek(out var oldest) && (DateTime.UtcNow - oldest).TotalMinutes > 1)
-        {
-            _requests.TryDequeue(out _);
-        }
-    }
-
-    public bool IsRateLimited()
-    {
-        // Clean up old requests
-        while (_requests.TryPeek(out var oldest) && (DateTime.UtcNow - oldest).TotalMinutes > 1)
-        {
-            _requests.TryDequeue(out _);
-        }
-
-        return _requests.Count >= _maxRequestsPerMinute;
     }
 }

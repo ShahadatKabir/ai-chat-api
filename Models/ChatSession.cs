@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class ChatSession
 {
@@ -7,4 +9,6 @@ public class ChatSession
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastActiveAt { get; set; } = DateTime.UtcNow;
     public int MessageCount { get; set; } = 0;
+    public bool IsPinned { get; set; } = false;
+    public List<string> Tags { get; set; } = new();
 }

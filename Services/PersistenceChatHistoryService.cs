@@ -297,4 +297,76 @@ public class PersistenceChatHistoryService : IChatHistoryService
             MostUsedModel = mostUsedModel
         };
     }
+
+    // ---- Session Pinning ----
+
+    public bool PinSession(string sessionId)
+    {
+        if (_sessions.TryGetValue(sessionId, out var session))
+        {
+            session.IsPinned = true;
+            session.LastActiveAt = DateTime.UtcNow;
+            return true;
+        }
+        return false;
+    }
+
+    public bool UnpinSession(string sessionId)
+    {
+        if (_sessions.TryGetValue(sessionId, out var session))
+        {
+            session.IsPinned = false;
+            session.LastActiveAt = DateTime.UtcNow;
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsSessionPinned(string sessionId)
+    {
+        _sessions.TryGetValue(sessionId, out var session);
+        return session?.IsPinned ?? false;
+    }
+
+    // ---- Session Tags ----
+
+    public bool AddTagToSession(string sessionId, string tag)
+    {
+        if (_sessions.TryGetValue(sessionId, out var session) && !string.IsNullOrWhiteSpace(tag))
+        {
+            var normalizedTag = tag.Trim().ToLowerInvariant();
+            if (!session.Tags.Contains(normalizedTag))
+            {
+                session.Tags.Add(normalizedTag);
+                session.LastActiveAt = DateTime.UtcNow;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool RemoveTagFromSession(string sessionId, string tag)
+    {
+        if (_sessions.TryGetValue(sessionId, out var session) && !string.IsNullOrWhiteSpace(tag))
+        {
+            var normalizedTag = tag.Trim().ToLowerInvariant();
+            var removed = session.Tags.Remove(normalizedTag);
+            if (removed)
+            {
+                session.LastActiveAt = DateTime.UtcNow;
+            }
+            return removed;
+        }
+        return false;
+    }
+
+    public IReadOnlyList<ChatSession> GetSessionsByTag(string tag)
+    {
+        if (string.IsNullOrWhiteSpace(tag))
+        {
+            return new List<ChatSession>();
+        }
+        var normalizedTag = tag.Trim().ToLowerInvariant();
+        return _sessions.Values.Where(s => s.Tags.Contains(normalizedTag)).ToList();
+    }
 }

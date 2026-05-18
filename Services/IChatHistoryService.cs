@@ -27,4 +27,14 @@ public interface IChatHistoryService
 
     // Analytics
     ChatAnalytics GetAnalytics(string sessionId = null);
+
+    // Session Pinning
+    bool PinSession(string sessionId);
+    bool UnpinSession(string sessionId);
+    bool IsSessionPinned(string sessionId);
+
+    // Session Tags
+    bool AddTagToSession(string sessionId, string tag);
+    bool RemoveTagFromSession(string sessionId, string tag);
+    IReadOnlyList<ChatSession> GetSessionsByTag(string tag);
 }

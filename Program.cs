@@ -87,6 +87,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IUserRateLimitService, UserRateLimitService>();
 builder.Services.AddHostedService<CleanupBackgroundService>();
 
 var app = builder.Build();
