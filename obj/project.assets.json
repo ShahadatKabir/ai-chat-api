@@ -789,7 +789,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lecture\\.nuget\\packages\\": {}
+    "C:\\Users\\lpl4047\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -797,12 +797,12 @@
       "projectUniqueName": "D:\\LPL\\AiChatApi\\AiChatApi.csproj",
       "projectName": "AiChatApi",
       "projectPath": "D:\\LPL\\AiChatApi\\AiChatApi.csproj",
-      "packagesPath": "C:\\Users\\Lecture\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\lpl4047\\.nuget\\packages\\",
       "outputPath": "D:\\LPL\\AiChatApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "D:\\LPL\\AiChatApi\\NuGet.Config",
-        "C:\\Users\\Lecture\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\lpl4047\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"

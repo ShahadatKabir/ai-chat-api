@@ -4,6 +4,8 @@
     "Title": "Default Conversation",
     "CreatedAt": "2026-05-07T12:00:52.2269322Z",
     "LastActiveAt": "2026-05-07T12:00:52.2269324Z",
-    "MessageCount": 0
+    "MessageCount": 0,
+    "IsPinned": false,
+    "Tags": []
   }
 ]
